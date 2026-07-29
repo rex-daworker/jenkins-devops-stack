@@ -71,7 +71,7 @@ pipeline {
     stage('SonarQube analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
-          sh "\${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=trading-app -Dsonar.sources=src"
+          sh "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=trading-app -Dsonar.sources=src"
         }
       }
     }
