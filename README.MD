@@ -58,6 +58,8 @@ Defined as code in a `Jenkinsfile` in the application repository. Node.js is pro
 | **Dependency audit**   | `npm audit` — flags known-vulnerable dependencies                                              |
 | **Secret scan**        | gitleaks — scans the workspace for committed secrets                                           |
 | **Vulnerability scan** | Trivy — scans dependencies for HIGH/CRITICAL CVEs                                              |
+| **Package**            | Archives `dist/` into a versioned `.tar.gz`, tagged with the Jenkins build number               |
+| **Publish to Nexus**   | Uploads the versioned artifact to a scoped Nexus repo via `curl`, authenticated with a dedicated Jenkins credential |
 
 ```groovy
 pipeline {
@@ -65,9 +67,15 @@ pipeline {
   tools { nodejs 'node20' }
   environment { SCANNER_HOME = tool 'sonar-scanner' }
   stages {
-    stage('Install') { steps { sh 'npm ci' } }
-    stage('Test')    { steps { sh 'npm test -- --run || echo "no tests yet"' } }
-    stage('Build')   { steps { sh 'npm run build' } }
+    stage('Install') {
+      steps { sh 'npm ci' }
+    }
+    stage('Test') {
+      steps { sh 'npm test -- --run || echo "no tests yet"' }
+    }
+    stage('Build') {
+      steps { sh 'npm run build' }
+    }
     stage('SonarQube analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
@@ -95,10 +103,22 @@ pipeline {
         sh 'docker run --rm -v jenkins-devops-stack_jenkins_home:/jhome aquasec/trivy:latest fs --severity HIGH,CRITICAL --scanners vuln /jhome/workspace/trading-app || true'
       }
     }
+    stage('Package') {
+      steps {
+        sh 'tar czf trading-app-${BUILD_NUMBER}.tar.gz -C dist .'
+      }
+    }
+    stage('Publish to Nexus') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+          sh 'curl -u $NEXUS_USER:$NEXUS_PASS --upload-file trading-app-${BUILD_NUMBER}.tar.gz http://nexus:8081/repository/trading-app-releases/'
+        }
+      }
+    }
   }
   post {
     success { echo 'Pipeline succeeded ✅' }
-    failure { echo 'Pipeline failed.' }
+    failure { echo 'Pipeline failed ❌' }
   }
 }
 ```
