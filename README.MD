@@ -133,6 +133,10 @@ pipeline {
 
 ![Trivy vulnerability scan](docs/images/07-trivy-scan.png)
 
+**7. Versioned artifact published to Nexus**
+
+![Nexus release artifact](docs/images/08-nexus-release.png)
+
 ---
 
 ## Roadmap
@@ -140,7 +144,7 @@ pipeline {
 - [x] **Phase 1 — Stack up:** Jenkins, SonarQube, and Nexus on Docker Compose
 - [x] **Phase 2 — First pipeline:** multi-stage build against a real app
 - [x] **Phase 3 — Quality & security gates:** SonarQube quality gate (blocking), `npm audit`, gitleaks secret scan, and Trivy vulnerability scan
-- [ ] **Phase 4 — Release:** publish versioned build artifacts to Nexus
+- [x] **Phase 4 — Release:** publish versioned build artifacts to Nexus
 - [ ] **Phase 5 — Robustness:** Jenkins Configuration as Code (JCasC), multibranch pipeline with webhook triggers, dedicated build agent
 
 ---
