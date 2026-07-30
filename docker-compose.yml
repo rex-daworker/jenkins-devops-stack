@@ -32,7 +32,9 @@ services:
       - nexus_data:/nexus-data
     restart: unless-stopped
   agent:
-    image: jenkins/inbound-agent:latest
+    agent:
+    build: ./agent
+    user: root
     environment:
       - JENKINS_URL=http://jenkins:8080
       - JENKINS_AGENT_NAME=agent-1
@@ -42,6 +44,8 @@ services:
       - default
     depends_on:
       - jenkins
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   jenkins_home:
   sonar_data:
