@@ -31,8 +31,8 @@ services:
     volumes:
       - nexus_data:/nexus-data
     restart: unless-stopped
+
   agent:
-    agent:
     build: ./agent
     user: root
     environment:
@@ -46,6 +46,7 @@ services:
       - jenkins
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   jenkins_home:
   sonar_data:
