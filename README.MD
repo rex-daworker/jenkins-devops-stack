@@ -48,17 +48,17 @@ Open http://localhost:8080, unlock Jenkins with that password, install the sugge
 
 Defined as code in a `Jenkinsfile` in the application repository. Node.js is provided through a configured Jenkins **NodeJS tool** (`node20`) so builds are reproducible.
 
-| Stage                  | What it does                                                                                   |
-| ---------------------- | ---------------------------------------------------------------------------------------------- |
-| **Install**            | `npm ci` — clean dependency install                                                            |
-| **Test**               | Vitest suite (10 tests)                                                                        |
-| **Build**              | Production build (`tsc -b && vite build`)                                                      |
-| **SonarQube analysis** | Full static code-quality scan                                                                  |
-| **Quality Gate**       | `waitForQualityGate abortPipeline: true` — **fails the build** if quality drops below the gate |
-| **Dependency audit**   | `npm audit` — flags known-vulnerable dependencies                                              |
-| **Secret scan**        | gitleaks — scans the workspace for committed secrets                                           |
-| **Vulnerability scan** | Trivy — scans dependencies for HIGH/CRITICAL CVEs                                              |
-| **Package**            | Archives `dist/` into a versioned `.tar.gz`, tagged with the Jenkins build number               |
+| Stage                  | What it does                                                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Install**            | `npm ci` — clean dependency install                                                                                 |
+| **Test**               | Vitest suite (10 tests)                                                                                             |
+| **Build**              | Production build (`tsc -b && vite build`)                                                                           |
+| **SonarQube analysis** | Full static code-quality scan                                                                                       |
+| **Quality Gate**       | `waitForQualityGate abortPipeline: true` — **fails the build** if quality drops below the gate                      |
+| **Dependency audit**   | `npm audit` — flags known-vulnerable dependencies                                                                   |
+| **Secret scan**        | gitleaks — scans the workspace for committed secrets                                                                |
+| **Vulnerability scan** | Trivy — scans dependencies for HIGH/CRITICAL CVEs                                                                   |
+| **Package**            | Archives `dist/` into a versioned `.tar.gz`, tagged with the Jenkins build number                                   |
 | **Publish to Nexus**   | Uploads the versioned artifact to a scoped Nexus repo via `curl`, authenticated with a dedicated Jenkins credential |
 
 ```groovy
@@ -129,7 +129,7 @@ pipeline {
 
 <!-- Save each screenshot into docs/images/ using the filenames below. -->
 
-**1. The full stack running (Jenkins, SonarQube, Nexus via Docker Compose)**
+**1. The full stack running (Jenkins, SonarQube, Nexus, Agent via Docker Compose)**
 
 ![Docker Compose bringing up the stack](docs/images/01-compose-up.png)
 
