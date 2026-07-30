@@ -31,7 +31,17 @@ services:
     volumes:
       - nexus_data:/nexus-data
     restart: unless-stopped
-
+  agent:
+    image: jenkins/inbound-agent:latest
+    environment:
+      - JENKINS_URL=http://jenkins:8080
+      - JENKINS_AGENT_NAME=agent-1
+      - JENKINS_SECRET=${JENKINS_AGENT_SECRET}
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
+    networks:
+      - default
+    depends_on:
+      - jenkins
 volumes:
   jenkins_home:
   sonar_data:
