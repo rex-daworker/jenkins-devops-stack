@@ -157,6 +157,10 @@ pipeline {
 
 ![Nexus release artifact](docs/images/08-nexus-release.png)
 
+**8. Full pipeline succeeding on the dedicated build agent (multibranch, auto-triggered)**
+
+![Pipeline running on dedicated agent](docs/images/09-agent-pipeline.png)
+
 ---
 
 ## Roadmap
@@ -165,7 +169,7 @@ pipeline {
 - [x] **Phase 2 — First pipeline:** multi-stage build against a real app
 - [x] **Phase 3 — Quality & security gates:** SonarQube quality gate (blocking), `npm audit`, gitleaks secret scan, and Trivy vulnerability scan
 - [x] **Phase 4 — Release:** publish versioned build artifacts to Nexus
-- [ ] **Phase 5 — Robustness:** Jenkins Configuration as Code (JCasC), multibranch pipeline with webhook triggers, dedicated build agent
+- [x] **Phase 5 — Robustness:** Jenkins Configuration as Code (JCasC), multibranch pipeline with webhook triggers, dedicated build agent
 
 ---
 
